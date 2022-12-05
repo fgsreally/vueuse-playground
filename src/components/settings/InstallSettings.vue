@@ -5,7 +5,7 @@ import PackageItem from './PackageItem.vue'
 
 const query = ref('')
 const thorttledQuery = useThrottle(query, 1000)
-const url = computed(() => `https://api.skypack.dev/v1/search?q=${thorttledQuery.value}`)
+const url = computed(() => `https://api.cdnjs.com/libraries?search=${thorttledQuery.value}&fields=name,description,version&limit=30`)
 const { data } = useFetch(url, { refetch: true }).json().get()
 
 const isOpen = ref(false)
@@ -14,7 +14,7 @@ const isOpen = ref(false)
 <template>
   <div>
     <div h="20" flex="~ row" items="center" p="x-4" space="x-4">
-      <Textfield v-model="query" h="12" placeholder="Search Skypack Packages...">
+      <Textfield v-model="query" h="12" placeholder="Search Packages...">
         <carbon-search />
       </Textfield>
       <Button h="12" border="1 dark-900 rounded" @click="isOpen = true">
@@ -27,7 +27,7 @@ const isOpen = ref(false)
         v-for="item in data.results"
         v-bind="item"
         :key="item.name"
-        source="skypack"
+        source="esm.sh"
       />
     </div>
   </div>

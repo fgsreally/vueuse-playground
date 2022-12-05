@@ -1,28 +1,28 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useVModel } from '@vueuse/core'
-import { orchestrator } from '~/orchestrator'
+import { ref } from "vue";
+import { useVModel } from "@vueuse/core";
+import { orchestrator } from "~/orchestrator";
 
-const name = ref('')
-const url = ref('')
+const name = ref("");
+const url = ref("");
 
-const props = defineProps<{ modelValue: boolean }>()
-const isOpen = useVModel(props)
+const props = defineProps<{ modelValue: boolean }>();
+const isOpen = useVModel(props);
 
 const addPackage = () => {
   orchestrator.packages = [
     ...orchestrator.packages,
     {
       name: name.value,
-      source: 'External',
-      url: url.value,
+      source: "External",
+      url: url.value || `https://esm.sh/${name.value}?external=vue`,
     },
-  ]
+  ];
 
-  isOpen.value = false
-  name.value = ''
-  url.value = ''
-}
+  isOpen.value = false;
+  name.value = "";
+  url.value = "";
+};
 </script>
 
 <template>
@@ -33,13 +33,7 @@ const addPackage = () => {
     z="10"
     @close="isOpen = false"
   >
-    <div
-      position="relative"
-      grid="~"
-      place="items-center"
-      min-h="screen"
-      p="4"
-    >
+    <div position="relative" grid="~" place="items-center" min-h="screen" p="4">
       <DialogOverlay
         position="fixed inset-0"
         backdrop="~ blur-sm"
@@ -58,21 +52,17 @@ const addPackage = () => {
         p="4"
       >
         <div grid="~" gap="4">
-          <div text="lg" font="medium">
-            Add Package
-          </div>
+          <div text="lg" font="medium">Add Package</div>
           <Textfield v-model="name" placeholder="@vueuse/core">
             <mdi-package-variant-closed />
           </Textfield>
-          <Textfield v-model="url" placeholder="https://unpkg.com/@vueuse/core/dist/index.esm.js">
+          <Textfield v-model="url" placeholder="https://esm.sh/@vueuse/core?external=vue">
             <carbon-link />
           </Textfield>
           <div flex="~ row" space="x-4">
             <span flex="1"></span>
             <Button>Cancel</Button>
-            <Button primary @click="addPackage()">
-              Add Package
-            </Button>
+            <Button primary @click="addPackage()"> Add Package </Button>
           </div>
         </div>
       </div>

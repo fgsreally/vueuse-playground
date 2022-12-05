@@ -27,10 +27,10 @@ watch(version, () => {
 const uninstall = () => orchestrator.packages = orchestrator.packages.filter(({ name }) => name !== props.name)
 const install = () => orchestrator.packages = [...orchestrator.packages, {
   name: props.name,
-  url: `https://cdn.skypack.dev/${props.name}`,
+  url: `https://esm.sh/${props.name}?external=vue`,
   description: props.description,
   version: version.value,
-  source: 'skypack',
+  source: 'esm.sh',
 }]
 </script>
 
